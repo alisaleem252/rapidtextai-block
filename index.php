@@ -111,9 +111,6 @@ if(rapidtextai_is_wp_bakery_active()){
  */
 if(rapidtextai_is_elementor_active()){
     function register_drcalcwidget_widget( $widgets_manager ) {
-
-        
-        $widgets_manager->register( new \Elementor_drcalcwidget_Widget_Widget() );
         class rapidtexiai_AITextBlock_Elementor_Widget extends \Elementor\Widget_Base {
 
             public function get_name() {
@@ -124,22 +121,10 @@ if(rapidtextai_is_elementor_active()){
                 return __('AI Text Block', 'rapidtexiai-ai-text-block-elementor');
             }
 
-            public function render() {
-                $settings = $this->get_settings_for_display();
+        
 
-                // Get the input text from Elementor widget settings
-                $input_text = $settings['input_text'];
-
-                // Call the rapidtexiai API here to generate text using $input_text
-                // Replace this with your rapidtexiai API integration code
-                $postid = get_post_ID();
-                $instance_id = $this->get_id();
-                $generated_text = rapidtextai_generate_text($input_text,$postid,$instance_id); // Store the generated text
-
-                echo $generated_text;
-            }
-
-            protected function _register_controls() {
+            protected function register_controls() {
+                
                 $this->start_controls_section(
                     'content_section',
                     [
@@ -148,29 +133,87 @@ if(rapidtextai_is_elementor_active()){
                     ]
                 );
 
+                
+
+             
                 $this->add_control(
                     'input_text',
                     [
-                        'label' => __('Input Text', 'rapidtexiai-ai-text-block-elementor'),
+                        'label' => __('Prompt', 'rapidtexiai-ai-text-block-elementor'),
                         'type' => \Elementor\Controls_Manager::TEXTAREA,
                         'placeholder' => __('Write an about use section for my company which manufacture light bulbs.', 'rapidtexiai-ai-text-block-elementor'),
                     ]
                 );
-
+                $postid = get_the_ID();
+                
+             
+                $this->add_control(
+                    'input_text_output',
+                    [
+                        'label' => esc_html__( 'Prompt Output', 'rapidtexiai-ai-text-block-elementor' ),
+                        'type' => \Elementor\Controls_Manager::TEXTAREA
+                    ]
+                );
+           
+           
                 $this->end_controls_section();
+            } // function
+
+
+            public function render() {
+                $settings = $this->get_settings_for_display();
+                //echo '<pre>';print_r($settings);echo '</pre>';
+                $input_text = $settings['input_text'];
+                $input_text_output = $settings['input_text_output'];
+             
+                $generated_text = '';
+
+                $postid = get_the_ID();
+                $instance_id = $this->get_id();
+
+                //var_dump($instance_id);
+
+                  if($input_text_output && trim($input_text_output) != '')
+                  $generated_text = $input_text_output;
+                  else{
+                    if($input_text && trim($input_text) != ''){
+                        $generated_text = rapidtextai_generate_text($input_text,$postid,$instance_id);
+                        $settings['input_text_output'] = $generated_text;
+                    }
+                
+                  }
+              
+
+
+                echo $generated_text;
             }
-        }   
 
-        
+            // protected function content_template() {}
 
-    }
+            // public function render_plain_content( $instance = [] ) {}
+
+          
+            
+
+        }  // clASS
+
+        $widgets_manager->register( new \rapidtexiai_AITextBlock_Elementor_Widget() );
+
+   }
     add_action( 'elementor/widgets/register', 'register_drcalcwidget_widget' );
 }
 
+
+
 function rapidtextai_generate_text($prompt,$postid,$instance_id){
-    //if(get_post_meta($postid,'rapidtextai_'.$instance_id,true)){
-     //   return get_post_meta($postid,'rapidtextai_'.$instance_id,true);
-    //}
+    
+    // if(get_post_meta($postid,'rapidtextai_'.$instance_id,true)){
+    //    return get_post_meta($postid,'rapidtextai_'.$instance_id,true);
+    // }
+    //update_post_meta($postid,'rapidtextai_'.$instance_id,'ai coming from meta');
+    return 'supposition the content coming from API';
+
+
     $apikey = get_option('rapidtexiai_api_key','c52ec1-5c73cd-e411e2-d8dc2d-491514');
     // Define the URL with query parameters
     $url = "https://app.rapidtextai.com/openai/detailedarticle?gigsixkey=" . $apikey;
@@ -182,24 +225,24 @@ function rapidtextai_generate_text($prompt,$postid,$instance_id){
             'temperature' => '0.7', // Assuming temperature is sent as POST data
             'custom-prompt' => $prompt,
     );
-    var_dump($url);
-    var_dump($request_data);
+    // var_dump($url);
+    // var_dump($request_data);
 
     
     $response = wp_remote_post($url, array(
         'body' => $request_data,
         'method' => 'POST',
         'timeout' => 45,
-        'redirection' => 5,
-        'httpversion' => '1.0',
-        'blocking' => true,
-        'sslverify' => false,
-        'headers' => array('Content-Type' => 'multipart/form-data'),
+        // 'redirection' => 5,
+        // 'httpversion' => '1.0',
+        // 'blocking' => true,
+        // 'sslverify' => false,
+        // 'headers' => array('Content-Type' => 'multipart/form-data'),
     ));
     if (!is_wp_error($response)) {
         $http_code = wp_remote_retrieve_response_code($response);
         $body = wp_remote_retrieve_body($response);
-        var_dump($body);
+        //var_dump($body);
 
         if ($http_code === 200) {
             $content = wpautop($body);
