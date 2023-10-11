@@ -47,14 +47,14 @@ function rapidtexiai_settings_page() {
 
     ?>
     <div class="wrap">
-        <h2>rapidtexiai Settings</h2>
+        <h2><?php esc_html_e('RapidTextAI Settings','rapidtextai')?></h2>
         <form method="post">
             <?php wp_nonce_field('rapidtexiai_api_key_nonce', 'rapidtexiai_api_key_nonce'); ?>
             <table class="form-table">
                 <tr>
-                    <th scope="row"><label for="rapidtexiai_api_key">rapidtexiai API Key:</label></th>
+                    <th scope="row"><label for="rapidtexiai_api_key"><?php esc_html_e('RapidTextAI API Key','rapidtextai')?></label></th>
                     <td>
-                        <input type="text" id="rapidtexiai_api_key" name="rapidtexiai_api_key" value="<?php echo esc_attr($current_api_key); ?>" class="regular-text" /> &nbsp; <a href="http://app.rapidtextai.com/" target="_blank">Get API Key From Here</a>
+                        <input type="text" id="rapidtexiai_api_key" name="rapidtexiai_api_key" value="<?php echo esc_attr($current_api_key); ?>" class="regular-text" /> &nbsp; <a href="http://app.rapidtextai.com/" target="_blank"><?php esc_html_e('Get API Key From Here','rapidtextai')?></a>
                     </td>
                 </tr>
             </table>
@@ -78,15 +78,15 @@ if(rapidtextai_is_wp_bakery_active()){
             'params' => array(
                 array(
                     'type' => 'textarea',
-                    'heading' => __('Prompt', 'rapidtextai'),
+                    'heading' => esc_html__('Prompt', 'rapidtextai'),
                     'param_name' => 'wpb_input_text',
-                    'description' => __('Enter the prompt to generate AI text, i.e Write an about use section for my company which manufacture light bulbs', 'rapidtextai'),
+                    'description' => esc_html__('Enter the prompt to generate AI text, i.e Write an about use section for my company which manufacture light bulbs', 'rapidtextai')
                 ),
                 array(
                     "type" => "textarea",
-                    "heading" => __( "Prompt Output", 'rapidtextai'),
+                    "heading" => esc_html__( "Prompt Output", 'rapidtextai'),
                     "param_name" => "wpb_input_text_output", 
-                    'description' => __('Prompt response will be here, edit here if needed', 'rapidtextai'),
+                    'description' => esc_html__('Prompt response will be here, edit here if needed', 'rapidtextai'),
                 ),
             ),
             'shortcode' => 'rapidtexiai_ai_text_block_shortcode',
@@ -140,7 +140,7 @@ if(rapidtextai_is_wp_bakery_active()){
 
         
         wp_update_post(array('ID'=>$postid,'post_content'=>$content));
-        echo $atts['wpb_input_text_output'];
+        return $atts['wpb_input_text_output'];
     } // func
     add_shortcode('rapidtexiai_ai_text_block', 'rapidtexiai_ai_text_block_shortcode');
 }
@@ -159,7 +159,7 @@ if(rapidtextai_is_elementor_active()){
             }
 
             public function get_title() {
-                return __('AI Text Block', 'rapidtexiai-ai-text-block-elementor');
+                return __('AI Text Block', 'rapidtextai');
             }
 
         
@@ -169,29 +169,27 @@ if(rapidtextai_is_elementor_active()){
                 $this->start_controls_section(
                     'content_section',
                     [
-                        'label' => __('Content', 'rapidtexiai-ai-text-block-elementor'),
+                        'label' => esc_html__('Content', 'rapidtextai'),
                         'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
                     ]
                 );
-
-                
 
              
                 $this->add_control(
                     'input_text',
                     [
-                        'label' => __('Prompt', 'rapidtexiai-ai-text-block-elementor'),
+                        'label' => esc_html__('Prompt', 'rapidtexiai-ai-text-block-elementor'),
                         'type' => \Elementor\Controls_Manager::TEXTAREA,
-                        'placeholder' => __('Write an about use section for my company which manufacture light bulbs.', 'rapidtexiai-ai-text-block-elementor'),
+                        'placeholder' => esc_html__('Write an about use section for my company which manufacture light bulbs.', 'rapidtexiai-ai-text-block-elementor'),
                     ]
                 );
-                $postid = get_the_ID();
                 
              
                 $this->add_control(
                     'input_text_output',
                     [
                         'label' => esc_html__( 'Prompt Output', 'rapidtexiai-ai-text-block-elementor' ),
+                        'description' => esc_html__('Prompt response will be here, edit here if needed', 'rapidtextai'),
                         'type' => \Elementor\Controls_Manager::TEXTAREA
                     ]
                 );
