@@ -140,7 +140,7 @@ if(rapidtextai_is_wp_bakery_active()){
 
         
         wp_update_post(array('ID'=>$postid,'post_content'=>$content));
-        return $atts['wpb_input_text_output'];
+        return isset($atts['wpb_input_text_output']) ? $atts['wpb_input_text_output'] : '';
     } // func
     add_shortcode('rapidtexiai_ai_text_block', 'rapidtexiai_ai_text_block_shortcode');
 }
