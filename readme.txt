@@ -4,6 +4,7 @@ Requires at least: 6.0
 Tested up to: 6.3
 Requires PHP: 7.0
 Stable tag: 1.0
+License: GPLv2
 
 Add an AI-powered text block using RapidTextAI.com to WP Bakery and Elementor
 
