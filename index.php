@@ -6,7 +6,7 @@
 * Author: Rapidtextai.com
 * Text Domain: rapidtextai
 */
-
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly 
 
 function rapidtextai_is_wp_bakery_active() {
     return class_exists('Vc_Manager');
