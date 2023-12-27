@@ -36,7 +36,7 @@ function rapidtexiai_settings_page() {
     }
 
     // Check if the form was submitted and the nonce is valid
-    if (isset($_POST['rapidtexiai_api_key_nonce']) && wp_verify_nonce($_POST['rapidtexiai_api_key_nonce'], 'rapidtexiai_api_key_nonce')) {
+    if ( isset( $_POST['rapidtexiai_api_key_nonce'] ) || wp_verify_nonce( sanitize_text_field( wp_unslash ( $_POST['rapidtexiai_api_key_nonce'] ) ) ,'rapidtexiai_api_key_nonce' ) ) {
         // Sanitize and save the API key
         $api_key = sanitize_text_field($_POST['rapidtexiai_api_key']);
         update_option('rapidtexiai_api_key', $api_key);
