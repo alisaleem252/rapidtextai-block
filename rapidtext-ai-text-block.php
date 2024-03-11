@@ -151,7 +151,7 @@ if(rapidtextai_is_wp_bakery_active()){
  * Elementor
  */
 if(rapidtextai_is_elementor_active()){
-    function register_drcalcwidget_widget( $widgets_manager ) {
+    function register_rapidtextai_block_widget( $widgets_manager ) {
         class rapidtexiai_AITextBlock_Elementor_Widget extends \Elementor\Widget_Base {
 
             public function get_name() {
@@ -241,7 +241,7 @@ if(rapidtextai_is_elementor_active()){
                 
 
 
-                    echo $generated_text;
+                    echo wp_kses_post($generated_text);
                 } // $jsonelem_arr
             } // func
 
@@ -257,7 +257,7 @@ if(rapidtextai_is_elementor_active()){
         $widgets_manager->register( new \rapidtexiai_AITextBlock_Elementor_Widget() );
 
    }
-    add_action( 'elementor/widgets/register', 'register_drcalcwidget_widget' );
+    add_action( 'elementor/widgets/register', 'register_rapidtextai_block_widget' );
 }
 
 

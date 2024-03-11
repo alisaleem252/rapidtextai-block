@@ -9,7 +9,11 @@ License: GPLv2
 Add an AI-powered text block using RapidTextAI.com to WP Bakery and Elementor
 
 == Description ==
-Add an AI-powered text block using RapidTextAI.com to WP Bakery and Elementor
+Add an AI-powered text block using RapidTextAI.com to WP Bakery and Elementor.
+
+[RapidTextAI Terms of Service](https://app.rapidtextai.com/terms)
+
+[RapidTextAI Privacy Policy](https://app.rapidtextai.com/privacy-policy)
 
 == Installation ==
 Unzip zip and Upload Folder to the /wp-content/plugins/ directory
