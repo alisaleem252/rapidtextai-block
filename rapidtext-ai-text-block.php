@@ -5,6 +5,7 @@
 * Version: 1.0
 * Author: Rapidtextai.com
 * Text Domain: rapidtextai
+* License: GPL-2.0-or-later
 */
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly 
 
@@ -17,44 +18,44 @@ function rapidtextai_is_elementor_active() {
 }
 
 
-function rapidtexiai_settings_menu() {
+function rapidtextai_settings_menu() {
     add_menu_page(
-        'rapidtexiai Settings',
-        'rapidtexiai Settings',
+        'rapidtextai Settings',
+        'rapidtextai Settings',
         'manage_options',
-        'rapidtexiai-settings',
-        'rapidtexiai_settings_page'
+        'rapidtextai-settings',
+        'rapidtextai_settings_page'
     );
 }
-add_action('admin_menu', 'rapidtexiai_settings_menu');
+add_action('admin_menu', 'rapidtextai_settings_menu');
 
 
 
-function rapidtexiai_settings_page() {
+function rapidtextai_settings_page() {
     if (!current_user_can('manage_options')) {
         return;
     }
 
     // Check if the form was submitted and the nonce is valid
-    if ( isset( $_POST['rapidtexiai_api_key_nonce'] ) || wp_verify_nonce( sanitize_text_field( wp_unslash ( $_POST['rapidtexiai_api_key_nonce'] ) ) ,'rapidtexiai_api_key_nonce' ) ) {
+    if ( isset( $_POST['rapidtextai_api_key_nonce'] ) || wp_verify_nonce( sanitize_text_field( wp_unslash ( $_POST['rapidtextai_api_key_nonce'] ) ) ,'rapidtextai_api_key_nonce' ) ) {
         // Sanitize and save the API key
-        $api_key = sanitize_text_field($_POST['rapidtexiai_api_key']);
-        update_option('rapidtexiai_api_key', $api_key);
+        $api_key = sanitize_text_field($_POST['rapidtextai_api_key']);
+        update_option('rapidtextai_api_key', $api_key);
     }
 
     // Retrieve the current API key
-    $current_api_key = get_option('rapidtexiai_api_key', '');
+    $current_api_key = get_option('rapidtextai_api_key', '');
 
     ?>
     <div class="wrap">
         <h2><?php esc_html_e('RapidTextAI Settings','rapidtextai')?></h2>
         <form method="post">
-            <?php wp_nonce_field('rapidtexiai_api_key_nonce', 'rapidtexiai_api_key_nonce'); ?>
+            <?php wp_nonce_field('rapidtextai_api_key_nonce', 'rapidtextai_api_key_nonce'); ?>
             <table class="form-table">
                 <tr>
-                    <th scope="row"><label for="rapidtexiai_api_key"><?php esc_html_e('RapidTextAI API Key','rapidtextai')?></label></th>
+                    <th scope="row"><label for="rapidtextai_api_key"><?php esc_html_e('RapidTextAI API Key','rapidtextai')?></label></th>
                     <td>
-                        <input type="text" id="rapidtexiai_api_key" name="rapidtexiai_api_key" value="<?php echo esc_attr($current_api_key); ?>" class="regular-text" /> &nbsp; <a href="http://app.rapidtextai.com/" target="_blank"><?php esc_html_e('Get API Key From Here','rapidtextai')?></a>
+                        <input type="text" id="rapidtextai_api_key" name="rapidtextai_api_key" value="<?php echo esc_attr($current_api_key); ?>" class="regular-text" /> &nbsp; <a href="http://app.rapidtextai.com/" target="_blank"><?php esc_html_e('Get API Key From Here','rapidtextai')?></a>
                     </td>
                 </tr>
             </table>
@@ -70,10 +71,10 @@ function rapidtexiai_settings_page() {
  * WP Bakery
  */
 if(rapidtextai_is_wp_bakery_active()){
-    function rapidtexiai_ai_text_block_vc_element() {
+    function rapidtextai_ai_text_block_vc_element() {
         vc_map(array(
             'name' => __('AI Text Block', 'rapidtextai'),
-            'base' => 'rapidtexiai_ai_text_block',
+            'base' => 'rapidtextai_ai_text_block',
             'category' => __('Content', 'rapidtextai'),
             'params' => array(
                 array(
@@ -89,14 +90,14 @@ if(rapidtextai_is_wp_bakery_active()){
                     'description' => esc_html__('Prompt response will be here, edit here if needed', 'rapidtextai'),
                 ),
             ),
-            'shortcode' => 'rapidtexiai_ai_text_block_shortcode',
+            'shortcode' => 'rapidtextai_ai_text_block_shortcode',
         ));
     }
-    add_action('vc_before_init', 'rapidtexiai_ai_text_block_vc_element');
+    add_action('vc_before_init', 'rapidtextai_ai_text_block_vc_element');
     
     
 
-    function rapidtexiai_ai_text_block_shortcode($atts, $sc_content = null,$instance_id) {
+    function rapidtextai_ai_text_block_shortcode($atts, $sc_content = null,$instance_id) {
         extract(shortcode_atts(array(
             'wpb_input_text' => '',
             'wpb_input_text_output' => '',
@@ -109,7 +110,7 @@ if(rapidtextai_is_wp_bakery_active()){
         global $post;
         $new_value = '';
 
-        $shortcode = 'rapidtexiai_ai_text_block';
+        $shortcode = 'rapidtextai_ai_text_block';
 
         // Define the attribute you want to update
         $attribute_to_update = 'wpb_input_text_output';
@@ -118,7 +119,7 @@ if(rapidtextai_is_wp_bakery_active()){
         $pattern = get_shortcode_regex([$shortcode]);
         preg_match_all('/' . $pattern . '/s', $content, $matches);
     
-        //echo 'matches rapidtexiai_ai_text_block <pre>';print_r($matches);echo '</pre>';
+        //echo 'matches rapidtextai_ai_text_block <pre>';print_r($matches);echo '</pre>';
         if (isset($matches[0]) && isset($atts['wpb_input_text']) && trim($atts['wpb_input_text']) != '') {
             foreach ($matches[0] as $shortcode_instance) {
                 //var_dump($shortcode_instance);
@@ -131,7 +132,7 @@ if(rapidtextai_is_wp_bakery_active()){
                 if (!isset($attribute_match[1])) {
                     $new_value = rapidtextai_generate_text($atts['wpb_input_text'],$postid,$instance_id);;
                     //var_dump($new_value);
-                    $updated_shortcode = str_replace('rapidtexiai_ai_text_block','rapidtexiai_ai_text_block wpb_input_text_output="'.$new_value.'"', $shortcode_instance);
+                    $updated_shortcode = str_replace('rapidtextai_ai_text_block','rapidtextai_ai_text_block wpb_input_text_output="'.$new_value.'"', $shortcode_instance);
                     $content = str_replace($shortcode_instance, $updated_shortcode, $content);
                 }
             }
@@ -142,7 +143,7 @@ if(rapidtextai_is_wp_bakery_active()){
         wp_update_post(array('ID'=>$postid,'post_content'=>$content));
         return isset($atts['wpb_input_text_output']) ? $atts['wpb_input_text_output'] : $new_value;
     } // func
-    add_shortcode('rapidtexiai_ai_text_block', 'rapidtexiai_ai_text_block_shortcode');
+    add_shortcode('rapidtextai_ai_text_block', 'rapidtextai_ai_text_block_shortcode');
 }
 
 
@@ -152,10 +153,10 @@ if(rapidtextai_is_wp_bakery_active()){
  */
 if(rapidtextai_is_elementor_active()){
     function register_rapidtextai_block_widget( $widgets_manager ) {
-        class rapidtexiai_AITextBlock_Elementor_Widget extends \Elementor\Widget_Base {
+        class rapidtextai_AITextBlock_Elementor_Widget extends \Elementor\Widget_Base {
 
             public function get_name() {
-                return 'rapidtexiai-ai-text-block';
+                return 'rapidtextai-ai-text-block';
             }
 
             public function get_title() {
@@ -178,9 +179,9 @@ if(rapidtextai_is_elementor_active()){
                 $this->add_control(
                     'input_text',
                     [
-                        'label' => esc_html__('Prompt', 'rapidtexiai-ai-text-block-elementor'),
+                        'label' => esc_html__('Prompt', 'rapidtextai-ai-text-block-elementor'),
                         'type' => \Elementor\Controls_Manager::TEXTAREA,
-                        'placeholder' => esc_html__('Write an about use section for my company which manufacture light bulbs.', 'rapidtexiai-ai-text-block-elementor'),
+                        'placeholder' => esc_html__('Write an about use section for my company which manufacture light bulbs.', 'rapidtextai-ai-text-block-elementor'),
                     ]
                 );
                 
@@ -188,7 +189,7 @@ if(rapidtextai_is_elementor_active()){
                 $this->add_control(
                     'input_text_output',
                     [
-                        'label' => esc_html__( 'Prompt Output', 'rapidtexiai-ai-text-block-elementor' ),
+                        'label' => esc_html__( 'Prompt Output', 'rapidtextai-ai-text-block-elementor' ),
                         'description' => esc_html__('Prompt response will be here, edit here if needed', 'rapidtextai'),
                         'type' => \Elementor\Controls_Manager::TEXTAREA
                     ]
@@ -254,7 +255,7 @@ if(rapidtextai_is_elementor_active()){
 
         }  // clASS
 
-        $widgets_manager->register( new \rapidtexiai_AITextBlock_Elementor_Widget() );
+        $widgets_manager->register( new \rapidtextai_AITextBlock_Elementor_Widget() );
 
    }
     add_action( 'elementor/widgets/register', 'register_rapidtextai_block_widget' );
@@ -263,7 +264,7 @@ if(rapidtextai_is_elementor_active()){
 
 
 function rapidtextai_generate_text($prompt,$postid,$instance_id){
-    $apikey = get_option('rapidtexiai_api_key','c52ec1-5c73cd-e411e2-d8dc2d-491514');
+    $apikey = get_option('rapidtextai_api_key','c52ec1-5c73cd-e411e2-d8dc2d-491514');
     // Define the URL with query parameters
     $url = "https://app.rapidtextai.com/openai/detailedarticle?gigsixkey=" . $apikey;
     $request_data = array(
