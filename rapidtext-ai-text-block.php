@@ -152,7 +152,7 @@ if(rapidtextai_is_wp_bakery_active()){
  * Elementor
  */
 if(rapidtextai_is_elementor_active()){
-    function register_rapidtextai_block_widget( $widgets_manager ) {
+    function rapidtextai_register_block_widget( $widgets_manager ) {
         class rapidtextai_AITextBlock_Elementor_Widget extends \Elementor\Widget_Base {
 
             public function get_name() {
@@ -258,7 +258,7 @@ if(rapidtextai_is_elementor_active()){
         $widgets_manager->register( new \rapidtextai_AITextBlock_Elementor_Widget() );
 
    }
-    add_action( 'elementor/widgets/register', 'register_rapidtextai_block_widget' );
+    add_action( 'elementor/widgets/register', 'rapidtextai_register_block_widget' );
 }
 
 
