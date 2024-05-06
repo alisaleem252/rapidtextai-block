@@ -37,7 +37,7 @@ function rapidtextai_settings_page() {
     }
 
     // Check if the form was submitted and the nonce is valid
-    if ( isset( $_POST['rapidtextai_api_key_nonce'] ) || wp_verify_nonce( sanitize_text_field( wp_unslash ( $_POST['rapidtextai_api_key_nonce'] ) ) ,'rapidtextai_api_key_nonce' ) ) {
+    if ( isset( $_POST['rapidtextai_api_key_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash ( $_POST['rapidtextai_api_key_nonce'] ) ) ,'rapidtextai_api_key_nonce' ) ) {
         // Sanitize and save the API key
         $api_key = sanitize_text_field($_POST['rapidtextai_api_key']);
         update_option('rapidtextai_api_key', $api_key);
@@ -102,8 +102,6 @@ if(rapidtextai_is_wp_bakery_active()){
             'wpb_input_text' => '',
             'wpb_input_text_output' => '',
         ), $atts));
-
-        //echo '<pre>';print_r($instance_id);echo '</pre>';
 
         $postid = get_the_ID();
 
