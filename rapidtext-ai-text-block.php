@@ -226,7 +226,7 @@ if(rapidtextai_is_elementor_active()){
                             $generated_text = rapidtextai_generate_text($input_text,$postid,$instance_id);
 
                             foreach ($jsonelem_arr as $key => $value) {
-                                if($value['elements'][0]['elements'][0]['id'] == $instance_id){
+                                if(isset($value['elements'][0]['elements'][0]['id']) && $value['elements'][0]['elements'][0]['id'] == $instance_id){
                                     $jsonelem_arr[$key]['elements'][0]['elements'][0]['settings']['input_text_output'] = $generated_text;
                                     $jsonvalue = wp_slash( wp_json_encode( $jsonelem_arr ) );
                                     update_metadata( 'post', $postid, '_elementor_data', $jsonvalue );
@@ -262,11 +262,12 @@ if(rapidtextai_is_elementor_active()){
 
 
 function rapidtextai_generate_text($prompt,$postid,$instance_id){
+    
     $apikey = get_option('rapidtextai_api_key','c52ec1-5c73cd-e411e2-d8dc2d-491514');
     // Define the URL with query parameters
     $url = "https://app.rapidtextai.com/openai/detailedarticle?gigsixkey=" . $apikey;
     $request_data = array(
-            'type' => 'intro',
+            'type' => 'custom-prompt',
             'toneOfVoice' => '', // Assuming tone is sent as POST data
             'language' => '', // Assuming language is sent as POST data
             'text' => '',
@@ -277,13 +278,13 @@ function rapidtextai_generate_text($prompt,$postid,$instance_id){
     
     $response = wp_remote_post($url, array(
         'body' => $request_data,
-       'method' => 'POST',
+        'method' => 'POST',
         'timeout' => 45,
         'redirection' => 5,
         'httpversion' => '1.0',
         'blocking' => true,
         'sslverify' => false,
-        'headers' => array('Content-Type' => 'multipart/form-data'),
+       // 'headers' => array('Content-Type' => 'multipart/form-data'),
     ));
 
     if (!is_wp_error($response)) {
